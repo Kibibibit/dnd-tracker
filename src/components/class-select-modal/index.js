@@ -1,4 +1,4 @@
-import { CLASS_LIST, CLASS_SORCERER } from "../../constants/player-classes"
+import { CLASS_LIST, CLASS_SORCERER, getClassHitDice } from "../../constants/player-classes"
 import { useStateContext } from "../../providers/state-provider"
 import Button from "../button"
 import Checkbox from "../checkbox"
@@ -34,7 +34,7 @@ const ClassSelectModal = ({ isOpen, onClose }) => {
         }
         setPlayerFirstClass(classType)
         setPlayerClassList({[classType]: 1})
-        setPlayerHitDice({[classType]: 1})
+        setPlayerHitDice({[getClassHitDice(classType)]: 1})
     }
 
     const playerClasses = Object.keys(playerClassList)

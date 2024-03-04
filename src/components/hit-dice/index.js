@@ -65,7 +65,7 @@ const HitDice = () => {
             const hitDiceAmount = playerHitDice[hitDiceType]
             const maxHitDiceAmount = maxDicePool[hitDiceType]
 
-            return <div>{hitDiceAmount}/{maxHitDiceAmount}d{hitDiceType}</div>
+            return <div key={`hit-dice-box-d${hitDiceType}`}>{hitDiceAmount}/{maxHitDiceAmount}d{hitDiceType}</div>
         })
 }
 
