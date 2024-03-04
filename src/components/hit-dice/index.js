@@ -1,4 +1,3 @@
-import { getClassHitDice } from "../../constants/player-classes"
 import { useStateContext } from "../../providers/state-provider"
 import BodySection from "../body-section"
 import Stack from "../stack"
@@ -7,53 +6,69 @@ import Button from "../button"
 
 const HitDice = () => {
 
-    const { playerClass, playerLevel, playerHitDice, setPlayerHitDice } = useStateContext()
-    const hitDice = getClassHitDice(playerClass)
+    const {  playerHitDice, setPlayerHitDice, maxDicePool } = useStateContext()
 
-
-    const updatePlayerHitDice = (value) => {
-        if (value > playerLevel) {
-            value = playerLevel
+    const updatePlayerHitDice = (value, diceType) => {
+        if (value > maxDicePool[diceType]) {
+            value = maxDicePool[diceType]
         }
         if (value < 0) {
             value = 0
         }
-        setPlayerHitDice(value)
+        setPlayerHitDice({ ...playerHitDice, [diceType]: value })
     }
 
     return <BodySection title="Hit Dice" modalContent={<Stack>
 
-        <div style={{ textAlign: "center", margin: "10px" }}>Hit Dice Type: d{hitDice}</div>
+        {Object.keys(maxDicePool).map((hitDiceType) => {
 
-        <div style={{ marginBottom: "20px" }}>
-            <NumberInput onChange={updatePlayerHitDice} value={playerHitDice} />
-        </div>
+            const hitDiceAmount = playerHitDice[hitDiceType]
 
-        <div style={{marginBottom:"30px"}}>
-            <Stack direction="row" justify="space-between">
-                <Stack direction="row">
-                    <Button 
-                        paddingBlock="20px" 
-                        width="50px"
-                        onClick={()=>updatePlayerHitDice(playerHitDice-1)}
-                    >-1</Button>
-                    <Button 
-                        paddingBlock="20px" 
-                        width="50px"
-                        onClick={()=>updatePlayerHitDice(playerHitDice+1)}
-                    >+1</Button>
-                </Stack>
+            return <div key={`hit-dice-content-d${hitDiceType}`}>
+                <div style={{ textAlign: "center", margin: "10px" }}>Hit Dice Type: d{hitDiceType}</div>
 
-                <Button 
-                    paddingBlock="20px" 
-                    width="50px"
-                    onClick={()=>updatePlayerHitDice(playerLevel)}
-                >Max</Button>
-            </Stack>
-        </div>
+                <div style={{ marginBottom: "20px" }}>
+                    <NumberInput onChange={(value) => updatePlayerHitDice(value, hitDiceType)} value={hitDiceAmount} />
+                </div>
+
+                <div style={{ marginBottom: "30px" }}>
+                    <Stack direction="row" justify="space-between">
+                        <Stack direction="row">
+                            <Button
+                                paddingBlock="20px"
+                                width="50px"
+                                onClick={() => updatePlayerHitDice(hitDiceAmount - 1, hitDiceType)}
+                            >-1</Button>
+                            <Button
+                                paddingBlock="20px"
+                                width="50px"
+                                onClick={() => updatePlayerHitDice(hitDiceAmount + 1, hitDiceType)}
+                            >+1</Button>
+                        </Stack>
+
+                        <Button
+                            paddingBlock="20px"
+                            width="50px"
+                            onClick={() => updatePlayerHitDice(maxDicePool[hitDiceType], hitDiceType)}
+                        >Max</Button>
+                    </Stack>
+                </div>
+            </div>
+
+        })}
+
+
 
     </Stack>}>
-        <div>{playerHitDice}/{playerLevel}d{hitDice}</div>
+        {Object.keys(maxDicePool).map((hitDiceType) => {
+
+            const hitDiceAmount = playerHitDice[hitDiceType]
+            const maxHitDiceAmount = maxDicePool[hitDiceType]
+
+            return <div>{hitDiceAmount}/{maxHitDiceAmount}d{hitDiceType}</div>
+        })
+}
+
     </BodySection>
 
 

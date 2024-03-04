@@ -1,21 +1,27 @@
 import Stack from "../stack"
 
 
-const Checkbox = ({value, onChange = () => {}, label}) => {
+const Checkbox = ({ disabled = false, value, onChange = () => { }, label }) => {
 
     return <Stack direction="row">
-        <div 
-        onClick={()=>onChange(!value)}
-        style={{
-            border:"solid grey 4px",
-            height:"20px",
-            width:"20px",
-            cursor:"pointer",
-            background: value ? "lightblue" : "transparent",
-            borderRadius: "100%"
-        }}/>
+        <div
+            onClick={() => {
+                if (!disabled) {
+                    onChange(!value)
+                }
+            }}
+            style={{
+                borderColor: disabled ? "lightgray" : "gray",
+                borderWidth: "4px",
+                borderStyle: "solid",
+                height: "20px",
+                width: "20px",
+                cursor: disabled ? "not-allowed" : "pointer",
+                background: value ? "lightblue" : "transparent",
+                borderRadius: "100%"
+            }} />
         <div>{label}</div>
-    </Stack> 
+    </Stack>
 
 }
 

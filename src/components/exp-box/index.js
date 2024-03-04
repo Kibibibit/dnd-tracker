@@ -10,7 +10,15 @@ const ExpBox = () => {
 
     const expToNextLevel = getExpToNextLevel(playerExp, playerLevel)
 
-    return <BodySection title={"Experience"}>
+    return <BodySection title={"Experience"}
+    
+        modalContent={<div>
+
+            
+
+        </div>}
+
+    >
         <div>Current Exp: {playerExp}</div>
         {expToNextLevel > 0 ? <div>Exp to Next Level: {expToNextLevel}</div> : <div>Level up available!</div>}
         <Stack direction="row" justify="center" padding="10px">

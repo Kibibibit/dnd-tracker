@@ -1,18 +1,36 @@
-import { getClassHitDice } from "../constants/player-classes"
+import { CLASS_SORCERER, getClassHitDice } from "../constants/player-classes"
 
 
-export const getMaxHp = (classType, level, con, tough, hillDwarf, draconicSorcerer) => {
-    const hitDice = getClassHitDice(classType)
-    const averageRoll = Math.floor((hitDice+1)/2)
-    const conModifier = Math.floor((con-10)/2)
-    
+export const getMaxHp = (classObject, firstPlayerClass, con, tough, hillDwarf, draconicSorcerer) => {
 
-    const out = (hitDice+conModifier) + 
-        (level-1)*(averageRoll+conModifier) +
-        (tough ? 1 : 0)*(level*2) +
-        (hillDwarf ? 1 : 0)*level +
-        (draconicSorcerer ? 1: 0)*level
+    const classes = Object.keys(classObject)
+    const firstDraconic = firstPlayerClass === CLASS_SORCERER && draconicSorcerer
+    const conModifier = Math.floor((con - 10) / 2)
 
+
+    let data = {...classObject}
+
+    data[firstPlayerClass] -= 1
+
+    let out = getClassHitDice(firstPlayerClass) + conModifier + (tough ? 2 : 0) + (hillDwarf ? 1 : 0) + (firstDraconic ? 1 : 0)
+
+
+    for (let i = 0; i < classes.length; i++) {
+        const classType = classes[i]
+        const hitDice = getClassHitDice(classType)
+        const averageRoll = Math.floor((hitDice + 1) / 2)
+        while (data[classType] > 0) {
+            
+            data[classType] -= 1
+            out += (averageRoll + conModifier) + 
+                   (tough ? 2 : 0) + 
+                   (hillDwarf ? 1 : 0) +
+                   (classType === CLASS_SORCERER && draconicSorcerer ? 1 : 0)
+
+
+        }
+
+    }
     if (out <= 0) {
         return 1
     } else {
@@ -44,5 +62,5 @@ const expTable = [
 ]
 
 export const getExpToNextLevel = (exp, level) => {
-    return Math.max(0, expTable[level]-exp)
+    return Math.max(0, expTable[level] - exp)
 }

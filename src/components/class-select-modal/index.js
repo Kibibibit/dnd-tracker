@@ -1,4 +1,4 @@
-import { CLASS_LIST } from "../../constants/player-classes"
+import { CLASS_LIST, CLASS_SORCERER } from "../../constants/player-classes"
 import { useStateContext } from "../../providers/state-provider"
 import Button from "../button"
 import Checkbox from "../checkbox"
@@ -11,20 +11,34 @@ import Stack from "../stack"
 const ClassSelectModal = ({ isOpen, onClose }) => {
 
     const {
-        playerClass, setPlayerClass,
         isHillDwarf, setIsHillDwarf,
         isTough, setIsTough,
         playerCon, setPlayerCon,
         setFirstLoad,
         isDraconicSorcerer, setIsDraconicSorcerer,
         setPlayerCurrentHp,
-        maxHitPoints
+        maxHitPoints,
+        playerClassList, setPlayerClassList,
+        setPlayerFirstClass,
+        setPlayerHitDice
     } = useStateContext()
 
 
-    const canStart = playerCon > 0 && playerClass
+    
 
 
+    const updatePlayerClass = (classType) => {
+
+        if (classType !== CLASS_SORCERER && isDraconicSorcerer) {
+            setIsDraconicSorcerer(false)
+        }
+        setPlayerFirstClass(classType)
+        setPlayerClassList({[classType]: 1})
+        setPlayerHitDice({[classType]: 1})
+    }
+
+    const playerClasses = Object.keys(playerClassList)
+    const canStart = playerCon > 0 && playerClasses.length > 0
 
     return <Modal isOpen={isOpen} onClose={onClose} closeOnClick={false}>
         <ModalContent width="80%">
@@ -37,9 +51,9 @@ const ClassSelectModal = ({ isOpen, onClose }) => {
                         width="20%"
                         paddingBlock="20px"
                         disabledBackground="green"
-                        disabled={classType === playerClass}
-                        background={classType === playerClass ? "green" : "gray"}
-                        onClick={() => setPlayerClass(classType)}
+                        disabled={playerClasses.includes(classType)}
+                        background={playerClasses.includes(classType) ? "green" : "gray"}
+                        onClick={() => updatePlayerClass(classType)}
                     >
                         {classType}
                     </Button>
@@ -51,7 +65,7 @@ const ClassSelectModal = ({ isOpen, onClose }) => {
                 <Stack direction="row" justify="flex-end" width={"100%"}>
                     <Checkbox value={isTough} onChange={setIsTough} label={"Has the Tough feat?"} />
                     <Checkbox value={isHillDwarf} onChange={setIsHillDwarf} label={"Is a Hill Dwarf?"} />
-                    <Checkbox value={isDraconicSorcerer} onChange={setIsDraconicSorcerer} label={"Is Draconic Sorcerer?"} />
+                    <Checkbox disabled={!playerClasses.includes(CLASS_SORCERER)} value={isDraconicSorcerer} onChange={setIsDraconicSorcerer} label={"Is Draconic Sorcerer?"} />
                 </Stack>
 
             </Stack>
