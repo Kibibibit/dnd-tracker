@@ -95,7 +95,7 @@ const LevelUp = () => {
                     </Button>
                 </Stack>
                 <div>
-                    <h4>Update your stats:</h4>
+                    <h4>Update your con modifier/feats:</h4>
                     <Stack direction="row">
                         <NumberInput value={con} onChange={setCon} />
                         <div style={{ marginLeft: "20px" }}>
