@@ -8,24 +8,23 @@ export const getMaxHp = (classObject, firstPlayerClass, con, tough, hillDwarf, d
     const conModifier = Math.floor((con - 10) / 2)
 
 
-    let data = {...classObject}
+    let data = { ...classObject }
 
     data[firstPlayerClass] -= 1
 
     let out = getClassHitDice(firstPlayerClass) + conModifier + (tough ? 2 : 0) + (hillDwarf ? 1 : 0) + (firstDraconic ? 1 : 0)
-
 
     for (let i = 0; i < classes.length; i++) {
         const classType = classes[i]
         const hitDice = getClassHitDice(classType)
         const averageRoll = Math.floor((hitDice + 1) / 2)
         while (data[classType] > 0) {
-            
+
             data[classType] -= 1
-            out += (averageRoll + conModifier) + 
-                   (tough ? 2 : 0) + 
-                   (hillDwarf ? 1 : 0) +
-                   (classType === CLASS_SORCERER && draconicSorcerer ? 1 : 0)
+            out += (averageRoll + conModifier) +
+                (tough ? 2 : 0) +
+                (hillDwarf ? 1 : 0) +
+                (classType === CLASS_SORCERER && draconicSorcerer ? 1 : 0)
 
 
         }
@@ -38,6 +37,22 @@ export const getMaxHp = (classObject, firstPlayerClass, con, tough, hillDwarf, d
     }
 
 }
+
+export const getMaxDicePool = (playerClassList) => {
+    let maxDicePool = {}
+    const playerClasses = Object.keys(playerClassList)
+    for (let i = 0; i < playerClasses.length; i++) {
+        const diceType = getClassHitDice(playerClasses[i])
+        if (Object.keys(maxDicePool).includes(`${diceType}`)) {
+            maxDicePool[diceType] += playerClassList[playerClasses[i]]
+        } else {
+            maxDicePool[diceType] = playerClassList[playerClasses[i]]
+        }
+
+    }
+    return maxDicePool
+}
+
 const expTable = [
     0,
     300,

@@ -5,13 +5,13 @@ import Stack from "../stack"
 import Button from "../button"
 
 
-const BodySection = ({ title, children, modalContent }) => {
+const BodySection = ({ title, children, modalContent, width="100%", modalWidth, onDone = () => {} }) => {
 
     const [modalOpen, setModalOpen] = useState(false)
 
     return <>
         <Modal isOpen={modalOpen} closeOnClick={true} onClose={() => setModalOpen(false)}>
-            <ModalContent>
+            <ModalContent width={modalWidth}>
                 <div style={{
                     width: "100%",
                     fontSize: "20pt",
@@ -22,7 +22,10 @@ const BodySection = ({ title, children, modalContent }) => {
                 </div>
                 {modalContent}
                 <Stack width={"100%"} direction="row" justify="center">
-                    <Button onClick={()=>setModalOpen(false)}>
+                    <Button onClick={()=>{
+                        setModalOpen(false)
+                        onDone()
+                    }}>
                         Done
                     </Button>
                 </Stack>
@@ -34,7 +37,7 @@ const BodySection = ({ title, children, modalContent }) => {
                 setModalOpen(true)
             }}
             style={{
-                width: "100%",
+                width: width,
                 background: "lightblue",
                 borderWidth: "4px",
                 borderStyle: "solid",

@@ -18,16 +18,18 @@ const HitDice = () => {
         setPlayerHitDice({ ...playerHitDice, [diceType]: value })
     }
 
-    return <BodySection title="Hit Dice" modalContent={<Stack>
+    return <BodySection title="Hit Dice" modalWidth={"80%"} modalContent={<Stack>
+        <Stack direction="row" wrap="wrap" justify="center" gap="40px">
 
+        
         {Object.keys(maxDicePool).map((hitDiceType) => {
 
-            const hitDiceAmount = playerHitDice[hitDiceType]
+            const hitDiceAmount = playerHitDice[hitDiceType] ?? 0
 
             return <div key={`hit-dice-content-d${hitDiceType}`}>
                 <div style={{ textAlign: "center", margin: "10px" }}>Hit Dice Type: d{hitDiceType}</div>
 
-                <div style={{ marginBottom: "20px" }}>
+                <div style={{ marginBottom: "0x" }}>
                     <NumberInput onChange={(value) => updatePlayerHitDice(value, hitDiceType)} value={hitDiceAmount} />
                 </div>
 
@@ -56,13 +58,14 @@ const HitDice = () => {
             </div>
 
         })}
+        </Stack>
 
 
 
     </Stack>}>
         {Object.keys(maxDicePool).map((hitDiceType) => {
 
-            const hitDiceAmount = playerHitDice[hitDiceType]
+            const hitDiceAmount = playerHitDice[hitDiceType] ?? 0
             const maxHitDiceAmount = maxDicePool[hitDiceType]
 
             return <div key={`hit-dice-box-d${hitDiceType}`}>{hitDiceAmount}/{maxHitDiceAmount}d{hitDiceType}</div>

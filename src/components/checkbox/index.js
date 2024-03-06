@@ -14,8 +14,9 @@ const Checkbox = ({ disabled = false, value, onChange = () => { }, label }) => {
                 borderColor: disabled ? "lightgray" : "gray",
                 borderWidth: "4px",
                 borderStyle: "solid",
-                height: "20px",
-                width: "20px",
+                minHeight: "20px",
+                maxHeight: "20px",
+                minWidth: "20px",
                 cursor: disabled ? "not-allowed" : "pointer",
                 background: value ? "lightblue" : "transparent",
                 borderRadius: "100%"

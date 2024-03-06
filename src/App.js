@@ -7,10 +7,15 @@ import Wallet from "./components/wallet";
 import HitPoints from "./components/hit-points";
 import HitDice from "./components/hit-dice";
 import ExpBox from "./components/exp-box";
+import { getExpToNextLevel } from "./utils/calculations";
+import LevelUp from "./components/level-up";
 
 function App() {
 
-  const { firstLoad } = useStateContext()
+  const { firstLoad, playerExp, playerLevel } = useStateContext()
+
+
+  const expToNextLevel = getExpToNextLevel(playerExp, playerLevel)
 
   const [modalOpen, setModalOpen] = useState(firstLoad)
 
@@ -23,24 +28,28 @@ function App() {
       <ClassSelectModal isOpen={modalOpen} onClose={() => { setModalOpen(false) }} />
       <div style={{ position: "static" }}>
         <AppBar />
-        <div style={{ padding: "20px", paddingRight:"40px"}}>
+        <div style={{ padding: "20px", paddingRight: "40px" }}>
           <Stack direction="row" justify="space-evenly">
             <Stack align="stretch" justify="space-between" width={"44%"} gap="10px">
-              
-                <HitPoints />
-                <HitDice />
-                <Wallet />
+
+              <HitPoints />
+              <HitDice />
+              <Wallet />
 
             </Stack>
             <Stack align="stretch" justify="space-between" width={"44%"} gap="10px">
-              
-                <ExpBox/>
+
+              <ExpBox />
 
             </Stack>
           </Stack>
           <Stack direction="row" justify="center">
             <div>Short Rest</div>
             <div>Long Rest</div>
+
+          </Stack>
+          <Stack direction="row" justify="center">
+            {expToNextLevel <= 0 && <LevelUp />}
           </Stack>
         </div>
 

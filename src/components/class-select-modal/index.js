@@ -1,5 +1,6 @@
 import { CLASS_LIST, CLASS_SORCERER, getClassHitDice } from "../../constants/player-classes"
 import { useStateContext } from "../../providers/state-provider"
+import { getMaxDicePool } from "../../utils/calculations"
 import Button from "../button"
 import Checkbox from "../checkbox"
 import Modal from "../modal"
@@ -20,7 +21,8 @@ const ClassSelectModal = ({ isOpen, onClose }) => {
         maxHitPoints,
         playerClassList, setPlayerClassList,
         setPlayerFirstClass,
-        setPlayerHitDice
+        setPlayerHitDice,
+        setMaxDicePool
     } = useStateContext()
 
 
@@ -34,6 +36,7 @@ const ClassSelectModal = ({ isOpen, onClose }) => {
         }
         setPlayerFirstClass(classType)
         setPlayerClassList({[classType]: 1})
+        setMaxDicePool(getMaxDicePool({[classType]: 1}))
         setPlayerHitDice({[getClassHitDice(classType)]: 1})
     }
 

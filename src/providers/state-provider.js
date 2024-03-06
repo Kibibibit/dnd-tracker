@@ -1,8 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { getLocalStorage, setLocalStorage } from "../utils/local-storage";
 import { KEY_CON, KEY_CP, KEY_DRACONIC, KEY_EP, KEY_FIRST_LOAD, KEY_FIRST_PLAYER_CLASS, KEY_GP, KEY_HILL_DWARF, KEY_PLAYER_CLASS_LIST, KEY_PLAYER_CURRENT_HP, KEY_PLAYER_EXP, KEY_PLAYER_HIT_DICE, KEY_PLAYER_LEVEL, KEY_PLAYER_TEMP_HP, KEY_PP, KEY_SP, KEY_TOUGH } from "../constants/storage-keys";
-import { getMaxHp } from "../utils/calculations";
-import { getClassHitDice } from "../constants/player-classes";
+import { getMaxDicePool, getMaxHp } from "../utils/calculations";
 
 
 const StateContext = createContext()
@@ -50,19 +49,8 @@ const StateProvider = ({ children }) => {
 
     const [playerHitDice, setPlayerHitDice] = useStorageStateObject(KEY_PLAYER_HIT_DICE, {})
 
-    let maxDicePool = {}
+    const [maxDicePool, setMaxDicePool] = useStorageStateObject(getMaxDicePool(playerClassList), {})
 
-    const playerClasses = Object.keys(playerClassList)
-    for (let i = 0; i < playerClasses.length; i++) {
-        const diceType = getClassHitDice(playerClasses[i])
-
-        if (Object.keys(maxDicePool).includes(diceType)) {
-            maxDicePool[diceType] += playerClassList[playerClasses[i]]
-        } else {
-            maxDicePool[diceType] = 1
-        }
-
-    }
 
 
 
@@ -94,7 +82,7 @@ const StateProvider = ({ children }) => {
         playerExp,setPlayerExp,
         playerTempHp, setPlayerTempHp,
         playerClassList, setPlayerClassList,
-        maxDicePool
+        maxDicePool, setMaxDicePool
     }
 
     return <StateContext.Provider value={value}>
