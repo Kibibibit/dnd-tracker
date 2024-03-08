@@ -44,4 +44,20 @@ const hitDice = {
     [CLASS_WIZARD]: 6
 }
 
+const casterType = {
+    [CLASS_BARBARIAN]:0,
+    [CLASS_BARD]: 1,
+    [CLASS_CLERIC]: 1,
+    [CLASS_DRUID]: 1,
+    [CLASS_FIGHTER]: 0,
+    [CLASS_MONK]: 0,
+    [CLASS_PALADIN]: 0.5,
+    [CLASS_RANGER]: 0.5,
+    [CLASS_ROGUE]: 0,
+    [CLASS_SORCERER]: 1,
+    [CLASS_WARLOCK]: 0,
+    [CLASS_WIZARD]: 1
+}
+
 export const getClassHitDice = (playerClass) => hitDice[playerClass] ?? 8
+export const getCasterLevelMod = (playerClass) => casterType[playerClass] ?? 0

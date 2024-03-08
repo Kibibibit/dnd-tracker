@@ -1,6 +1,6 @@
 import { CLASS_LIST, CLASS_SORCERER, getClassHitDice } from "../../constants/player-classes"
 import { useStateContext } from "../../providers/state-provider"
-import { getMaxDicePool } from "../../utils/calculations"
+import { getCasterLevel, getMaxDicePool, spellSlotsForCasterLevel } from "../../utils/calculations"
 import Button from "../button"
 import Checkbox from "../checkbox"
 import Modal from "../modal"
@@ -22,7 +22,9 @@ const ClassSelectModal = ({ isOpen, onClose }) => {
         playerClassList, setPlayerClassList,
         setPlayerFirstClass,
         setPlayerHitDice,
-        setMaxDicePool
+        setMaxDicePool,
+        setMaxSpellSlots,
+        setCurrentSpellSlots,
     } = useStateContext()
 
 
@@ -38,6 +40,8 @@ const ClassSelectModal = ({ isOpen, onClose }) => {
         setPlayerClassList({[classType]: 1})
         setMaxDicePool(getMaxDicePool({[classType]: 1}))
         setPlayerHitDice({[getClassHitDice(classType)]: 1})
+        setMaxSpellSlots(spellSlotsForCasterLevel(getCasterLevel({[classType]: 1})))
+        setCurrentSpellSlots(spellSlotsForCasterLevel(getCasterLevel({[classType]: 1})))
     }
 
     const playerClasses = Object.keys(playerClassList)

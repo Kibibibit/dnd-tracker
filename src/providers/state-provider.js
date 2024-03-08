@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { getLocalStorage, setLocalStorage } from "../utils/local-storage";
-import { KEY_CON, KEY_CP, KEY_DRACONIC, KEY_EP, KEY_FIRST_LOAD, KEY_FIRST_PLAYER_CLASS, KEY_GP, KEY_HILL_DWARF, KEY_PLAYER_CLASS_LIST, KEY_PLAYER_CURRENT_HP, KEY_PLAYER_EXP, KEY_PLAYER_HIT_DICE, KEY_PLAYER_LEVEL, KEY_PLAYER_TEMP_HP, KEY_PP, KEY_SP, KEY_TOUGH } from "../constants/storage-keys";
-import { getMaxDicePool, getMaxHp } from "../utils/calculations";
+import { KEY_CON, KEY_CP, KEY_DRACONIC, KEY_EP, KEY_FIRST_LOAD, KEY_FIRST_PLAYER_CLASS, KEY_GP, KEY_HILL_DWARF, KEY_MAX_HIT_DICE, KEY_MAX_SPELL_SLOTS, KEY_PLAYER_CLASS_LIST, KEY_PLAYER_CURRENT_HP, KEY_PLAYER_EXP, KEY_PLAYER_HIT_DICE, KEY_PLAYER_LEVEL, KEY_PLAYER_TEMP_HP, KEY_PP, KEY_SP, KEY_SPELL_SLOTS, KEY_TOUGH } from "../constants/storage-keys";
+import { getCasterLevel, getMaxDicePool, getMaxHp, spellSlotsForCasterLevel } from "../utils/calculations";
 
 
 const StateContext = createContext()
@@ -49,7 +49,10 @@ const StateProvider = ({ children }) => {
 
     const [playerHitDice, setPlayerHitDice] = useStorageStateObject(KEY_PLAYER_HIT_DICE, {})
 
-    const [maxDicePool, setMaxDicePool] = useStorageStateObject(getMaxDicePool(playerClassList), {})
+    const [maxDicePool, setMaxDicePool] = useStorageStateObject(KEY_MAX_HIT_DICE, getMaxDicePool(playerClassList), {})
+
+    const [maxSpellSlots, setMaxSpellSlots] = useStorageStateObject(KEY_MAX_SPELL_SLOTS, spellSlotsForCasterLevel(getCasterLevel(playerClassList)), [])
+    const [currentSpellSlots, setCurrentSpellSlots] = useStorageStateObject(KEY_SPELL_SLOTS, maxSpellSlots, [])
 
 
 
@@ -82,7 +85,9 @@ const StateProvider = ({ children }) => {
         playerExp,setPlayerExp,
         playerTempHp, setPlayerTempHp,
         playerClassList, setPlayerClassList,
-        maxDicePool, setMaxDicePool
+        maxDicePool, setMaxDicePool,
+        maxSpellSlots, setMaxSpellSlots,
+        currentSpellSlots, setCurrentSpellSlots
     }
 
     return <StateContext.Provider value={value}>

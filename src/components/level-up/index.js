@@ -4,7 +4,7 @@ import BodySection from "../body-section"
 import Button from "../button"
 import Stack from "../stack"
 import { CLASS_LIST, CLASS_SORCERER, getClassHitDice } from "../../constants/player-classes"
-import { getMaxDicePool, getMaxHp } from "../../utils/calculations"
+import { getCasterLevel, getMaxDicePool, getMaxHp, spellSlotsForCasterLevel } from "../../utils/calculations"
 import NumberInput from "../number-input"
 import Checkbox from "../checkbox"
 
@@ -25,8 +25,11 @@ const LevelUp = () => {
         setPlayerCon,
         maxHitPoints,
         setPlayerLevel,
-        playerLevel, setMaxDicePool
-
+        playerLevel, setMaxDicePool,
+        setMaxSpellSlots,
+        maxSpellSlots,
+        currentSpellSlots,
+        setCurrentSpellSlots
     } = useStateContext()
 
 
@@ -46,6 +49,21 @@ const LevelUp = () => {
     const newMaxHp = getMaxHp(newPlayerClassList, playerFirstClass, con, tough, isHillDwarf, draconic)
 
 
+    const getSpellSlotDifference = () => {
+        const newMaxSpellSlots = spellSlotsForCasterLevel(getCasterLevel(newPlayerClassList))
+        let out = [0,0,0,0,0,0,0,0,0]
+        let allZero = true
+        for (let i = 0; i < 9; i++) {
+            out[i] = newMaxSpellSlots[i]-maxSpellSlots[i]
+            if (out[i] !== 0) {
+                allZero = false
+            }
+        }
+        return {out, allZero}
+    }
+
+    const {out: spellSlotsDifference, allZero: noNewSpellSlots} = getSpellSlotDifference()
+
     return <BodySection title={"Level Up!"} width="200px" modalWidth={showAllClasses ? "80%" : "60%"} 
     onDone={() => {
         setPlayerClassList(newPlayerClassList)
@@ -54,6 +72,15 @@ const LevelUp = () => {
         setPlayerCon(con)
         setPlayerLevel(playerLevel + 1)
         setMaxDicePool(getMaxDicePool(newPlayerClassList))
+        setMaxSpellSlots(spellSlotsForCasterLevel(getCasterLevel(newPlayerClassList)))
+
+        let newSpellSlotsTotal = [...currentSpellSlots]
+        for (let i = 0; i < 9; i++) {
+            newSpellSlotsTotal[i] += spellSlotsDifference[i]
+        }
+        setCurrentSpellSlots(newSpellSlotsTotal)
+        
+
     }}
     
     
@@ -111,7 +138,17 @@ const LevelUp = () => {
                     <div style={{ textAlign: "center" }}>
                         <b>You will gain:</b><br />
                         Max HP: {maxHitPoints} -{'>'} {newMaxHp}, 
-                        Hit Dice: +1d{getClassHitDice(levellingClass)}
+                        Hit Dice: +1d{getClassHitDice(levellingClass)}<br/>
+                        {!noNewSpellSlots && <div>Spell Slots: 
+                        {spellSlotsDifference.map((value, index) => {
+                            if (value > 0) {
+                                return <div key={`spell-slot-level-${index+1}`}>
+                                    +{value} Lvl. {index+1}{index < 8 ? "; " : ""}
+                                </div>
+                            } else {
+                                return <div key={`spell-slot-level-${index+1}`}></div>
+                            }
+                        })}</div>}
                     </div>
                 </Stack>
 

@@ -9,6 +9,8 @@ import HitDice from "./components/hit-dice";
 import ExpBox from "./components/exp-box";
 import { getExpToNextLevel } from "./utils/calculations";
 import LevelUp from "./components/level-up";
+import SpellSlots from "./components/spell-slots";
+import LongRest from "./components/long-rest";
 
 function App() {
 
@@ -37,19 +39,17 @@ function App() {
               <Wallet />
 
             </Stack>
-            <Stack align="stretch" justify="space-between" width={"44%"} gap="10px">
+            <Stack align="stretch" justify="flex-start" width={"44%"} gap="10px">
 
               <ExpBox />
-
+              {expToNextLevel <= 0 && <LevelUp />}
+              <SpellSlots/>
             </Stack>
           </Stack>
           <Stack direction="row" justify="center">
             <div>Short Rest</div>
-            <div>Long Rest</div>
+            <LongRest/>
 
-          </Stack>
-          <Stack direction="row" justify="center">
-            {expToNextLevel <= 0 && <LevelUp />}
           </Stack>
         </div>
 

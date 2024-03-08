@@ -16,9 +16,15 @@ const BodySection = ({ title, children, modalContent, width="100%", modalWidth, 
                     width: "100%",
                     fontSize: "20pt",
                     fontWeight: "bold",
-                    textAlign:"center"
+                    textAlign:"center",
+                    marginBottom:"40px"
                 }}>
                     {title}
+                    <div style={{
+                        position:"absolute", 
+                        right:0, top:0}}>
+                            <Button onClick={()=>setModalOpen(false)}>X</Button>
+                    </div>
                 </div>
                 {modalContent}
                 <Stack width={"100%"} direction="row" justify="center">

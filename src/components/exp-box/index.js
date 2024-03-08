@@ -31,7 +31,7 @@ const ExpBox = () => {
 
     >
         <div>Current Exp: {playerExp}</div>
-        {expToNextLevel > 0 ? <div>Exp to Next Level: {expToNextLevel}</div> : playerLevel > 20 ? <div>Level up available!</div> : <div>Max Level Reached!</div>}
+        {expToNextLevel > 0 ? <div>Exp to Next Level: {expToNextLevel}</div> : playerLevel < 20 ? <div>Level up available!</div> : <div>Max Level Reached!</div>}
         <Stack direction="row" justify="center" padding="10px">
 
         </Stack>
