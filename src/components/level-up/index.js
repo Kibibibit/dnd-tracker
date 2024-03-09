@@ -64,7 +64,7 @@ const LevelUp = () => {
 
     const {out: spellSlotsDifference, allZero: noNewSpellSlots} = getSpellSlotDifference()
 
-    return <BodySection title={"Level Up!"} width="200px" modalWidth={showAllClasses ? "80%" : "60%"} 
+    return <BodySection title={"Level Up!"} width="100%" modalWidth={showAllClasses ? "80%" : "60%"} 
     onDone={() => {
         setPlayerClassList(newPlayerClassList)
         setIsTough(tough)

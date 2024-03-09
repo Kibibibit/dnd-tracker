@@ -11,6 +11,7 @@ import { getExpToNextLevel } from "./utils/calculations";
 import LevelUp from "./components/level-up";
 import SpellSlots from "./components/spell-slots";
 import LongRest from "./components/long-rest";
+import ShortRest from "./components/short-rest";
 
 function App() {
 
@@ -46,11 +47,14 @@ function App() {
               <SpellSlots/>
             </Stack>
           </Stack>
+          <div style={{marginTop:"20px"}}>
           <Stack direction="row" justify="center">
-            <div>Short Rest</div>
+            <ShortRest/>
             <LongRest/>
 
           </Stack>
+          </div>
+          
         </div>
 
       </div>
