@@ -2,8 +2,8 @@ version: '3.7'
 
 services:
 
-  daniel-thewindmills:
-    container_name: daniel-thewindmills
+  dnd-tracker:
+    container_name: dnd-tracker
     build:
       context: .
       dockerfile: Dockerfile
