@@ -1,4 +1,6 @@
 import { useStateContext } from "../../providers/state-provider"
+import BodySection from "../body-section"
+import Stack from "../stack"
 
 
 const AppBar = () => {
@@ -16,7 +18,11 @@ const AppBar = () => {
         paddingLeft:"20px",
         background:"lightblue"
     }}>
+        <Stack direction="row" justify="space-between">
         <h2 style={{margin:"0"}}>Level {playerLevel} {displayString}</h2>
+        <BodySection title={"Clear"} modalContent={"Are you sure?"} onDone={()=>localStorage.clear()}></BodySection>
+        </Stack>
+       
     </div>
 
 }
