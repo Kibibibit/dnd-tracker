@@ -20,7 +20,7 @@ const AppBar = () => {
     }}>
         <Stack direction="row" justify="space-between">
         <h2 style={{margin:"0"}}>Level {playerLevel} {displayString}</h2>
-        <BodySection title={"Clear"} modalContent={"Are you sure?"} onDone={()=>localStorage.clear()}></BodySection>
+        <BodySection width="20ch" title={"Clear"} modalContent={"Are you sure?"} onDone={()=>localStorage.clear()}></BodySection>
         </Stack>
        
     </div>
